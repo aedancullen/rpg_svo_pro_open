@@ -501,8 +501,8 @@ void SvoInterface::monoLoop()
 
 void SvoInterface::stereoLoop()
 {
-  typedef message_filters::sync_policies::ExactTime<sensor_msgs::Image, sensor_msgs::Image> ExactPolicy;
-  typedef message_filters::Synchronizer<ExactPolicy> ExactSync;
+  typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> ApproximatePolicy;
+  typedef message_filters::Synchronizer<ApproximatePolicy> ApproximateSync;
 
   ros::NodeHandle nh(nh_, "image_thread");
   ros::CallbackQueue queue;
@@ -514,7 +514,7 @@ void SvoInterface::stereoLoop()
   image_transport::ImageTransport it(nh);
   image_transport::SubscriberFilter sub0(it, cam0_topic, 1, std::string("raw"));
   image_transport::SubscriberFilter sub1(it, cam1_topic, 1, std::string("raw"));
-  ExactSync sync_sub(ExactPolicy(5), sub0, sub1);
+  ApproximateSync sync_sub(ApproximatePolicy(5), sub0, sub1);
   sync_sub.registerCallback(boost::bind(&svo::SvoInterface::stereoCallback, this, _1, _2));
 
   while(ros::ok() && !quit_)

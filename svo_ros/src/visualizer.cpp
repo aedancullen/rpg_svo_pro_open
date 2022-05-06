@@ -275,8 +275,8 @@ void Visualizer::publishCameraPoses(const FrameBundlePtr& frame_bundle,
                                     const int64_t timestamp_nanoseconds)
 {
   vk::output_helper::publishTfTransform(
-      frame_bundle->at(0)->T_cam_world(),
-      ros::Time().fromNSec(timestamp_nanoseconds), "cam_pos", kWorldFrame, br_);
+      frame_bundle->at(0)->T_world_cam(),
+      ros::Time().fromNSec(timestamp_nanoseconds), kWorldFrame, "cam_pos", br_);
 
   for (size_t i = 0; i < frame_bundle->size(); ++i)
   {
